@@ -6,8 +6,9 @@ $FirstName = Read-Host "Enter the new users First Name"
 $LastName = Read-Host "Enter the new users Last Name"
 $LastNameNoSpaces = $LastName -replace '\s',''
 $DisplayName = "$FirstName $LastName"
-$domain = "ultimateammunition.com"
+$domain = (Get-Item env:USER_DOMAIN).Value
 $Userprincipalname = ($FirstName.Substring(0,1) + $LastNameNoSpaces + "@" + $domain).toLower()
+$newUserPassword = (Get-Item env:USER_PASSWORD).Value
 
 $JobTitle = Read-Host "What is the new users job title: "
 $CompanyName = Read-Host "What is the new users Company Name: "
@@ -43,12 +44,12 @@ Write-Host "The new users principal name $Userprincipalname"
 
 # Password Profile (you can modify this to generate a random password or use a standard one)
 $PasswordProfile = @{
-    Password = 'yjDn?%d!4)UR'  # Replace this with a generated or user-defined password
+    Password = $newUserPassword  # Replace this with a generated or user-defined password
     ForceChangePasswordNextSignIn = $true
 }
 
 $mailNickName = $Userprincipalname.Split("@")[0]
-New-MgUser 
+New-MgUser `
   -DisplayName $DisplayName `
    -UserPrincipalName $Userprincipalname `
       -UsageLocation $UsageLocation `
@@ -56,10 +57,10 @@ New-MgUser
          -OfficeLocation $OfficeLocation `
           -CompanyName $CompanyName `
            -JobTitle $JobTitle `
-           -AccountEnabled $true `
+           -AccountEnabled `
            -PasswordProfile $PasswordProfile `
            -MailNickname $mailNickName 
-set-mguser -UserId $Userprincipalname -UsageLocation $UsageLocation
-#Set-MgUserLicense -UserId $Userprincipalname -AddLicenses $AssignedLicenses
+Update-MgUser -UserId $Userprincipalname -UsageLocation $UsageLocation
+Set-MgUserLicense -UserId $Userprincipalname -AddLicenses $AssignedLicenses -RemoveLicenses @()
 
  
