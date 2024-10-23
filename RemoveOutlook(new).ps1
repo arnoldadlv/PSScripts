@@ -1,0 +1,1 @@
+Get-AppxPackage -AllUsers | Where-Object{$_.Name -like "*Outlook*"} | Remove-AppxPackage

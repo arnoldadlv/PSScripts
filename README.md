@@ -1,7 +1,5 @@
 # PSScripts
 
-# PSScripts
-
 ### Description:
 A collection of simple PowerShell scripts that I use in my role as a system administrator. These scripts are designed to help with everyday tasks, such as managing Active Directory users and network resources. This repository aims to provide useful, time-saving tools for sysadmins working in similar environments.
 
